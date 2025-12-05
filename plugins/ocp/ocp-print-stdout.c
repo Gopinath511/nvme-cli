@@ -168,11 +168,7 @@ static void stdout_smart_extended_log(struct ocp_smart_extended_log *log, unsign
 	case 0 ... 1:
 		break;
 	default:
-	case 4:
-		printf("  NVMe Command Set Errata Version               %d\n",
-			log->nvme_cmdset_errata_version);
-		printf("  Lowest Permitted Firmware Revision            %"PRIu64"\n",
-			le64_to_cpu(log->lowest_permitted_fw_rev));
+	case 5:
 		printf("  NVMe Over Pcie Errata Version			%d\n",
 			log->nvme_over_pcie_errate_version);
 		printf("  NVMe Mi Errata Version			%d\n",
@@ -185,8 +181,6 @@ static void stdout_smart_extended_log(struct ocp_smart_extended_log *log, unsign
 			le16_to_cpu(log->media_dies_offline));
 		printf("  Max temperature recorded			%d\n",
 			log->max_temperature_recorded);
-		printf("  Form factor					%d\n",
-			log->form_factor);
 		printf("  Nand avg erase count				%"PRIu64"\n",
 			le64_to_cpu(log->nand_avg_erase_count));
 		printf("  Command timeouts				%"PRIu32"\n",
@@ -219,8 +213,12 @@ static void stdout_smart_extended_log(struct ocp_smart_extended_log *log, unsign
 		for (i = 0; i < sizeof(log->dssd_firmware_build_label); i++)
 			printf("%c", log->dssd_firmware_build_label[i]);
 		printf("\n");
-		printf("  Die in use bad nand block			%"PRIu64"\n",
-			le64_to_cpu(log->die_in_use_bad_nand_block));
+		fallthrough;
+	case 4:
+		printf("  NVMe Command Set Errata Version               %d\n",
+			log->nvme_cmdset_errata_version);
+		printf("  Lowest Permitted Firmware Revision            %"PRIu64"\n",
+			le64_to_cpu(log->lowest_permitted_fw_rev));
 		fallthrough;
 	case 2 ... 3:
 		printf("  Errata Version Field                          %d\n",
